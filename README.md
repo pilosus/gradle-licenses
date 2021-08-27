@@ -26,7 +26,9 @@ Add the following to the `:dependencies` list in your `project.clj`:
 
 ## Options
 
-No options implemented yet.
+- `{:fully-qualified-names [boolean]}`: if `true` use Gradle package's fully qualified name,
+  e.g. `org.checkerframework:checker-compat-qual:2.5.5`. Otherwise project name and version used,
+  e.g. `Checker Qual:2.5.5`. Default value is `true`.
 
 
 ## License
