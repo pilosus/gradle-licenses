@@ -6,7 +6,7 @@
 A Clojure library for parsing [gradle-license-plugin](https://github.com/jaredsburrows/gradle-license-plugin)
 JSON files to be used in [pip-license-checker](https://github.com/pilosus/pip-license-checker)
 license compliance tool.
-x
+
 ## Installation
 
 ### Leiningen
