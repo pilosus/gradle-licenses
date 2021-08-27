@@ -14,7 +14,7 @@ license compliance tool.
 Add the following to the `:dependencies` list in your `project.clj`:
 
 ```
-[org.clojars.vrs/gradle-licenses "0.1.0"]
+[org.clojars.vrs/gradle-licenses "0.2.0"]
 ```
 
 ## Quick Start
