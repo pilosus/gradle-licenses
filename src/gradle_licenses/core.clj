@@ -32,6 +32,8 @@
 (def key-dependency "dependency")
 (def key-licenses "licenses")
 (def key-license "license")
+(def key-project "project")
+(def key-version "version")
 
 ;; Helpers
 
@@ -56,14 +58,39 @@
         result (not-empty license-str)]
     result))
 
+(s/fdef dependency->package
+  :args (s/cat
+         :dependency ::dependency
+         :options ::options)
+  :ret ::nilable-str)
+
+(defn dependency->package
+  "Get package name nilable string from a map"
+  [dependency options]
+  (let [{:keys [fully-qualified-names] :or {fully-qualified-names true}} options
+        project (not-empty (get dependency key-project))
+        version (not-empty (get dependency key-version))
+        parts
+        (cond
+          (and project version) [project version]
+          project [project]
+          :else nil)
+        package
+        (if fully-qualified-names
+          (get dependency key-dependency)
+          (not-empty (str/join ":" parts)))]
+    package))
+
 (s/fdef dependency->map
-  :args ::dependency
+  :args (s/cat
+         :dependency ::dependency
+         :options ::options)
   :ret ::data)
 
 (defn dependency->map
   "Convert dependency item from the parsed JSON into a map"
-  [dependency]
-  (let [package-str (get dependency key-dependency)
+  [dependency options]
+  (let [package-str (dependency->package dependency options)
         license-vec (get dependency key-licenses)
         license-str (license-vec->license license-vec)]
     {:package package-str :license license-str}))
@@ -82,7 +109,7 @@
   [path options]
   (let [content (path->string path)
         dependencies (json/parse-string content)
-        result (map dependency->map dependencies)]
+        result (map #(dependency->map % options) dependencies)]
     result))
 
 ;; (instrument `gradle-json->data)
